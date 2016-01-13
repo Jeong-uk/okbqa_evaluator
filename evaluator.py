@@ -28,7 +28,7 @@ def evaluate() :
 	print data
 	# load questions & language
 	input_json = json.loads(data)
-	lang = input_json['lang']
+	lang = input_json['language']
 
 	conf = {}
 	try :
@@ -60,9 +60,10 @@ def evaluate() :
 	for question in questions : 
 		if lang == question['lang'] : 
 			data = {}
-			data['lang'] = lang
+			data['language'] = lang
 			data['string'] = question['question']
 			data['conf'] = conf
+			print question['question']
 			result = send_postrequest("http://121.254.173.77:7040/controller", json.dumps(data))
 			answers = []
 			for answer in json.loads(result)['answers'].split('\n')[:-1] : 
@@ -70,7 +71,6 @@ def evaluate() :
 				answer = answer[pos+1:].replace('_', ' ').lower()
 				answers.append(answer)
 
-			print question['question']
 			print answers
 			if question['answer'].lower() in answers : 
 				correct += 1 
